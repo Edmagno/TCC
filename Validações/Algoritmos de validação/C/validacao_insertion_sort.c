@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> // Adicionado para sprintf
+
+// Função insertion_sort (a que você forneceu)
+void insertion_sort(int X[], int n) {
+    int i, j, eleito;
+    for (i = 1; i < n; i++) {
+        eleito = X[i];
+        j = i - 1;
+
+        while (j >= 0 && X[j] > eleito) {
+            X[j + 1] = X[j];
+            j = j - 1;
+        }
+        X[j + 1] = eleito;
+    }
+}
+
+// Função para ler um vetor de um arquivo (igual à anterior)
+int* lerVetor(const char* nomeArquivo, int* tamanho) {
+    FILE* arquivo = fopen(nomeArquivo, "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo de entrada: %s\n", nomeArquivo);
+        *tamanho = 0;
+        return NULL;
+    }
+
+    int contador = 0;
+    char linha[100];
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        contador++;
+    }
+
+    int* vetor = (int*)malloc(contador * sizeof(int));
+    if (vetor == NULL) {
+        printf("Erro de alocacao de memoria.\n");
+        fclose(arquivo);
+        *tamanho = 0;
+        return NULL;
+    }
+
+    rewind(arquivo);
+
+    for (int i = 0; i < contador; i++) {
+        fscanf(arquivo, "%d", &vetor[i]);
+    }
+
+    fclose(arquivo);
+    *tamanho = contador;
+    return vetor;
+}
+
+// Função para escrever o vetor ordenado em um arquivo (igual à anterior)
+void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
+    FILE* arquivo = fopen(nomeArquivo, "w");
+    if (arquivo == NULL) {
+        printf("Erro ao criar o arquivo de saida: %s\n", nomeArquivo);
+        return;
+    }
+
+    for (int i = 0; i < tamanho; i++) {
+        fprintf(arquivo, "%d\n", vetor[i]);
+    }
+
+    fclose(arquivo);
+}
+
+// Função main adaptada para o processo em lote
+int main() {
+    // Caminhos relativos a partir da pasta de execução do algoritmo
+    char* caminhoEntradaBase = "../../../Vetores/tamanho_100/";
+    // Novo caminho de saída para o Insertion Sort
+    char* caminhoSaidaBase = "../../Vetores ordenados/C/Insertion sort/";
+
+    char nomeArquivoEntrada[256];
+    char nomeArquivoSaida[256];
+    
+    printf("Iniciando processo de ordenacao em lote com Insertion Sort...\n");
+
+    for (int i = 1; i <= 100; i++) {
+        sprintf(nomeArquivoEntrada, "%svetor_100_%d.txt", caminhoEntradaBase, i);
+        sprintf(nomeArquivoSaida, "%svetor_100_%d.txt", caminhoSaidaBase, i);
+
+        int tamanhoVetor;
+        int* vetor = lerVetor(nomeArquivoEntrada, &tamanhoVetor);
+
+        if (vetor != NULL && tamanhoVetor > 0) {
+            insertion_sort(vetor, tamanhoVetor); // Chamando o insertion_sort
+            escreverVetor(nomeArquivoSaida, vetor, tamanhoVetor);
+            printf("Arquivo vetor_100_%d.txt processado com sucesso.\n", i);
+            free(vetor);
+        }
+    }
+    
+    printf("Processo concluido!\n");
+
+    return 0;
+}

@@ -1,0 +1,96 @@
+=====================================================
+      RELATÓRIO DE VERIFICAÇÃO DE ORDENAÇÃO
+      Gerado em: 18/10/2025 20:04:46
+=====================================================
+
+===== LINGUAGEM: C =====
+
+--- Algoritmo: Bubble sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Heap sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Insertion sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Merge sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Quick sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Selection sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+===== LINGUAGEM: C++ =====
+
+--- Algoritmo: Bubble sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Heap sort ---
+  - Arquivos Corretos: 0
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Insertion sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Merge sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Quick sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Selection sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+===== LINGUAGEM: PYTHON =====
+
+--- Algoritmo: Bubble sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Heap sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Insertion sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Merge sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Quick sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+--- Algoritmo: Selection sort ---
+  - Arquivos Corretos: 100
+  - Arquivos Incorretos/Com Falha: 0
+
+
+=====================================================
+           LISTA DE ARQUIVOS COM PROBLEMAS
+=====================================================
+Nenhum arquivo com erro encontrado. Todos os vetores estão ordenados corretamente!
+
+
+=====================================================
+                   RESUMO GERAL
+=====================================================
+Total de Arquivos Corretamente Ordenados: 1700
+Total de Arquivos Incorretos ou com Erro: 0
+Total Geral de Arquivos Verificados: 1700
