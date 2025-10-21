@@ -1,6 +1,6 @@
 # TCC: Análise de Performance de Algoritmos de Ordenação (C vs. C++)
 
-Este repositório contém todos os artefatos relacionados ao Trabalho de Conclusão de Curso (TCC) focado na análise de performance e legibilidade de algoritmos de ordenação (QuickSort, MergeSort e HeapSort) implementados em C e C++.
+Este repositório contém todos os artefatos relacionados ao meu Trabalho de Conclusão de Curso (TCC) em Engenharia da Computação focado na análise de desempenho de algoritmos de ordenação (Bubblesort, Insertionsort, Selectionsort, QuickSort, MergeSort e HeapSort) implementados em C, C++ e Python.
 
 O projeto é dividido em duas frentes de análise:
 1.  **Análise Quantitativa (Performance):** Medição do tempo de execução dos algoritmos com diferentes tamanhos de entrada (vetores de 100 a 1.000.000 de elementos), com 100 repetições para cada cenário.
@@ -8,59 +8,76 @@ O projeto é dividido em duas frentes de análise:
 
 ---
 
-##  Estrutura do Repositório
+## Estrutura do Repositório
 
-O repositório está organizado em quatro pastas principais para facilitar a navegação e compreensão da metodologia:
+O repositório está organizado nas seguintes pastas para facilitar a navegação e compreensão da metodologia:
 
-* **/Codigos-Fonte**: Contém as implementações dos algoritmos nas linguagens C e C++. Cada arquivo é um programa executável que gera um `.csv` com os tempos de execução.
-* **/Resultados**: Armazena os dados brutos de performance gerados pelos programas. Os dados estão em formato `.csv` e separados por linguagem.
-* **/Analise**: Contém o Jupyter Notebook (`.ipynb`) responsável por toda a análise de dados. Este notebook carrega os arquivos `.csv` da pasta `/Resultados`, os consolida e gera as visualizações de dados (gráficos de linha, box plots, etc.).
-* **/Pesquisa-Legibilidade**: Guarda os materiais de apoio para a análise qualitativa (legibilidade), incluindo as imagens do código e o roteiro de perguntas.
+* **/Algoritmos**: Contém as implementações dos algoritmos de ordenação nas linguagens C, C++ e Python. Cada subpasta de linguagem armazena os códigos-fonte e os respectivos executáveis responsáveis por gerar os arquivos `.csv` de performance.
+
+* **/Analise**: Abriga o Jupyter Notebook (`.ipynb`) principal. Este notebook é responsável por importar os dados da pasta `/Resultados`, consolidar tudo em um DataFrame e gerar as análises estatísticas e visualizações (gráficos de linha, box plots, etc.).
+
+* **/Apoio**: Armazena materiais de consulta, artigos e referências teóricas utilizadas durante o desenvolvimento do trabalho.
+
+* **/Executores**: Contém os scripts de automação (arquivos `.bash`) utilizados para executar os testes em lote, garantindo que todos os algoritmos sejam rodados sob as mesmas condições e gerando os arquivos de resultado de forma padronizada.
+
+* **/Resultados**: Armazena os dados brutos de performance gerados pelos executáveis. Os dados estão em formato `.csv`, separados em subpastas por linguagem, e prontos para ser consumidos pelo notebook de análise.
+
+* **/Validações**: Inclui um conjunto de testes e códigos auxiliares. O objetivo desta pasta é validar a corretude das implementações, assegurando que os algoritmos estão, de fato, ordenando os vetores corretamente antes da medição de performance.
+
+* **/Vetores**: Contém o script responsável por gerar os vetores de entrada (com diferentes tamanhos) e os próprios arquivos de vetores utilizados nos testes, garantindo que todos os algoritmos sejam testados com os mesmos dados.
+
 * **README.md**: Este arquivo.
 
 ---
 
 ## Fluxo de Trabalho do Projeto
 
-Esta seção descreve o passo a passo da execução do projeto, desde a coleta de dados até a análise final.
+Esta seção descreve o passo a passo metodológico da execução do projeto, desde a preparação dos dados até a análise final.
 
-### Fase 1: Implementação dos Algoritmos
+### Fase 1: Geração dos Vetores de Teste
 
-Os três algoritmos (HeapSort, MergeSort e QuickSort) foram implementados nas linguagens C e C++. Os códigos-fonte completos estão disponíveis na pasta `/Codigos-Fonte`.
+Antes de qualquer execução, foi necessário criar uma base de dados consistente para os testes.
 
-### Fase 2: Coleta de Dados (Geração dos Resultados)
+1.  **Criação dos Vetores:** Foi utilizado o script na pasta `/Vetores` para gerar os conjuntos de dados. Para cada tamanho (ex: 100, 1.000, 1.000.000), foram criados **100 vetores distintos** com elementos em ordem aleatória.
+2.  **Armazenamento:** Esses vetores foram salvos, garantindo que todos os algoritmos, em todas as linguagens, fossem testados com os mesmos 100 conjuntos de dados de entrada para cada tamanho.
 
-Cada programa da Fase 1 foi compilado e executado para realizar os testes de performance. O processo de coleta seguiu os seguintes passos:
+### Fase 2: Implementação dos Algoritmos
 
-1.  **Geração de Vetores:** Para cada teste, foram criados vetores com diferentes tamanhos (ex: 100, 1.000, 10.000, 100.000, 1.000.000).
-2.  **Repetições:** Para garantir a relevância estatística e mitigar flutuações do sistema, cada algoritmo foi executado 100 vezes para cada tamanho de vetor.
-3.  **Medição:** O tempo de execução de cada uma das 100 ordenações foi cronometrado.
-4.  **Exportação:** Ao final da execução, cada programa salvou seus resultados em um arquivo `.csv` (ex: `resultados_quick_sort_c.csv`), contendo colunas como `Linguagem`, `Algoritmo`, `Tamanho`, `Tempo` e `Repeticao`.
-5.  **Armazenamento:** Esses arquivos `.csv` brutos são a fonte primária de dados para a análise e estão armazenados na pasta `/Resultados`.
+Os seis algoritmos (BubbleSort, InsertionSort, SelectionSort, MergeSort, HeapSort e QuickSort) foram implementados nas linguagens C, C++ e Python. Os códigos-fonte completos estão disponíveis na pasta `/Algoritmos`.
 
-### Fase 3: Análise de Performance (Análise Quantitativa)
+### Fase 3: Validação da Corretude
 
-Toda a análise dos dados de performance foi centralizada no Jupyter Notebook `AnaliseDePerformance.ipynb`, localizado na pasta `/Analise`. O fluxo de análise dentro do notebook é:
+Antes de medir o *tempo* de execução, foi crucial garantir a *corretude* das implementações.
 
-1.  **Carregamento:** O notebook primeiro localiza e carrega dinamicamente todos os arquivos `.csv` das pastas `/Resultados/C` e `/Resultados/C++`.
-2.  **Unificação:** Os dados de todos os arquivos são concatenados em um único DataFrame (usando a biblioteca Pandas) para permitir uma análise unificada.
-3.  **Agregação:** Os dados brutos (com 100 repetições) são agrupados para calcular estatísticas descritivas, como o **tempo médio**, **mediana** e **desvio padrão** para cada cenário (ex: C++, QuickSort, Tamanho 1.000.000).
+1.  **Testes de Ordenação:** Utilizando os scripts da pasta `/Validações`, cada algoritmo foi executado em vetores de teste menores.
+2.  **Verificação:** Os resultados foram comparados com saídas de ordenação conhecidas e validadas para assegurar que os vetores estavam, de fato, sendo ordenados corretamente.
+
+### Fase 4: Execução Automatizada e Coleta de Dados
+
+Com os algoritmos validados e os vetores prontos, a coleta de performance foi automatizada.
+
+1.  **Scripts de Execução:** Os arquivos `.bash` na pasta `/Executores` foram criados para automatizar todo o processo de teste.
+2.  **Execução em Lote:** Cada script executou os algoritmos (da pasta `/Algoritmos`) contra os vetores de teste (da pasta `/Vetores`).
+3.  **Coleta Estatística:** Para garantir a relevância estatística, o teste para um único tamanho (ex: 1.000.000) consistiu em **ordenar os 100 vetores diferentes** daquele tamanho, um de cada vez.
+4.  **Medição:** O tempo de execução de *cada uma* dessas 100 ordenações (uma para cada vetor) foi cronometrado individualmente.
+5.  **Exportação:** Ao final do processo, o programa salvou os 100 tempos medidos em um único arquivo `.csv` (ex: `resultados_quick_sort_c.csv`), contendo colunas como `Linguagem`, `Algoritmo`, `Tamanho`, `Tempo` e `Repeticao` (onde `Repeticao` de 1 a 100 indica o índice do vetor testado).
+6.  **Armazenamento:** Esses arquivos `.csv` brutos foram salvos diretamente na pasta `/Resultados`.
+
+### Fase 5: Análise de Performance (Análise Quantitativa)
+
+Toda a análise dos dados de performance foi centralizada no Jupyter Notebook localizado na pasta `/Analise`.
+
+1.  **Carregamento:** O notebook primeiro localiza e carrega dinamicamente todos os arquivos `.csv` das pastas `/Resultados/C`, `/Resultados/C++` e `/Resultados/Python`.
+2.  **Unificação:** Os dados de todos os arquivos são concatenados em um único DataFrame (usando a biblioteca Pandas).
+3.  **Agregação:** Os dados brutos (agora representando 100 execuções em vetores distintos) são agrupados para calcular estatísticas descritivas, como o **tempo médio**, **mediana** e **desvio padrão** para cada cenário (ex: C++, QuickSort, Tamanho 1.000.000).
 4.  **Visualização:** Com os dados tratados e agregados, são gerados os gráficos comparativos (usando Matplotlib e Seaborn) para responder às perguntas do TCC, como:
     * Gráficos de Linha (Complexidade vs. Tempo).
-    * Box Plots (Distribuição e estabilidade dos tempos).
-    * Gráficos de Barras (Comparação direta C vs. C++).
-
-### Fase 4: Análise de Legibilidade (Análise Qualitativa)
-
-Paralelamente à análise de performance, foi conduzida uma pesquisa qualitativa:
-
-1.  **Criação do Formulário:** Um questionário foi elaborado (conforme `/Pesquisa-Legibilidade/Roteiro_Pesquisa.md`) com perguntas objetivas e subjetivas sobre a legibilidade dos códigos.
-2.  **Coleta de Respostas:** A pesquisa foi compartilhada com alunos da área para coletar suas percepções sobre a facilidade de entender e manter cada implementação.
-3.  **Análise:** As respostas foram compiladas para identificar padrões e complementar a análise quantitativa de performance.
+    * Box Plots (Distribuição e estabilidade dos tempos entre os diferentes vetores).
+    * Gráficos de Barras (Comparação direta entre as linguagens).
 
 ---
 
 ## Autor
 
-* **[Seu Nome Completo]** - [seu.email@dominio.com]
+* **[Seu Nome Completo]** - [edmagnogomesgomes@gmail.com]
 * **Orientador:** [Nome do Orientador]
