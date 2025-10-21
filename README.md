@@ -47,10 +47,10 @@ Os seis algoritmos (BubbleSort, InsertionSort, SelectionSort, MergeSort, HeapSor
 
 ### Fase 3: Validação da Corretude
 
-Antes de medir o *tempo* de execução, foi crucial garantir a *corretude* das implementações.
+Antes de medir o *tempo* de execução, foi fundamental garantir a *corretude* das implementações. Este processo foi feito em duas etapas e está contido na pasta `/Validações`:
 
-1.  **Testes de Ordenação:** Utilizando os scripts da pasta `/Validações`, cada algoritmo foi executado em vetores de teste menores.
-2.  **Verificação:** Os resultados foram comparados com saídas de ordenação conhecidas e validadas para assegurar que os vetores estavam, de fato, sendo ordenados corretamente.
+1.  **Execução de Teste:** Cada algoritmo foi executado utilizando um conjunto de vetores de teste de tamanho 100 (escolhido para facilitar a depuração). O resultado de cada ordenação foi salvo em um arquivo de saída (o vetor supostamente ordenado).
+2.  **Verificação Automatizada:** Foi desenvolvido um script Python que, após a execução dos algoritmos, lia todos os arquivos de saída gerados. Este script verificava a ordenação de cada vetor (garantindo que `vetor[i] <= vetor[i+1]` para todos os elementos) e emitia um relatório final, confirmando se todas as implementações estavam, de fato, ordenando 100% dos vetores de teste corretamente.
 
 ### Fase 4: Execução Automatizada e Coleta de Dados
 
@@ -79,5 +79,4 @@ Toda a análise dos dados de performance foi centralizada no Jupyter Notebook lo
 
 ## Autor
 
-* **[Seu Nome Completo]** - [edmagnogomesgomes@gmail.com]
-* **Orientador:** [Nome do Orientador]
+* **[Seu Nome Completo]** - [edamgnogomes@gmail.com]
