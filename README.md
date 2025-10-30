@@ -4,7 +4,7 @@ Este repositório contém todos os artefatos relacionados ao meu Trabalho de Con
 
 O projeto é dividido em duas frentes de análise:
 1.  **Análise Quantitativa (Performance):** Medição do tempo de execução dos algoritmos com diferentes tamanhos de entrada (vetores de 100 a 1.000.000 de elementos), com 100 repetições para cada cenário.
-2.  **Análise Qualitativa (Legibilidade):** Pesquisa com alunos para avaliar a facilidade de entendimento e manutenção de cada implementação.
+2.  **Análise Qualitativa (Legibilidade):** Pesquisa com alunos para avaliar a facilidade de entendimento e implementação nas respectivas linguagens de programação.
 
 ---
 
