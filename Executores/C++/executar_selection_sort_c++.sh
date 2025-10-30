@@ -1,10 +1,8 @@
-#!/bin/bash
-
 # --- Parte 1: Encontrar o Diretório Base (TCC) ---
 DIRETORIO_ATUAL=$(dirname "$(readlink -f "$0")")
 echo "Diretório inicial do script: $DIRETORIO_ATUAL"
 
-DIRETORIO_BASE="" # Inicializa a variável
+DIRETORIO_BASE="" 
 
 while [ "$DIRETORIO_ATUAL" != "/" ]; do 
     echo "Verificando o diretório: $DIRETORIO_ATUAL"
@@ -22,14 +20,14 @@ if [ -z "$DIRETORIO_BASE" ]; then
     exit 1
 fi
 
-# --- Parte 2: Definição de Variáveis (C++ - BubbleSort) ---
+# --- Parte 2: Definição de Variáveis (C++ - SelectionSort) ---
 
 NOME_ARQUIVO_FONTE="selection_sort.cpp"
 LINGUAGEM="C++"
 ALGORITMO="SelectionSort"
 
 DIRETORIO_ALGORITMOS="$DIRETORIO_BASE/Algoritmos/"$LINGUAGEM""
-ARQUIVO_EXECUTAVEL="$DIRETORIO_ALGORITMOS/bubble_sort_exec"
+ARQUIVO_EXECUTAVEL="$DIRETORIO_ALGORITMOS/"$ALGORITMO""
 DIRETORIO_VETORES="$DIRETORIO_BASE/Vetores"
 DIRETORIO_RESULTADOS_CPP="$DIRETORIO_BASE/Resultados/$LINGUAGEM"
 ARQUIVO_RESULTADOS="$DIRETORIO_RESULTADOS_CPP/resultados_"$ALGORITMO"_"$LINGUAGEM".csv"
@@ -48,7 +46,6 @@ echo "Compilação bem-sucedida. Executável em: $ARQUIVO_EXECUTAVEL"
 
 # --- Parte 4: Lógica para "Continuar de onde parou" ---
 
-# --- CORREÇÃO 2: Garantir que o diretório de resultados exista ---
 mkdir -p "$DIRETORIO_RESULTADOS_CPP"
 
 CABECALHO="Linguagem;Algoritmo;Tamanho;Tempo;Repeticao"
@@ -65,7 +62,7 @@ else
     
     # 3. Verifica se a última linha não é o cabeçalho (ou seja, se já temos dados)
     if [ "$ultima_linha" != "$CABECALHO" ] && [ -n "$ultima_linha" ]; then
-        # Extrai o último tamanho (campo 3) e repetição (campo 5)
+        # Extrai o último tamanho e repetição 
         ultimo_tamanho=$(echo "$ultima_linha" | awk -F';' '{print $3}')
         ultima_repeticao=$(echo "$ultima_linha" | awk -F';' '{print $5}')
         
@@ -78,7 +75,7 @@ else
     fi
 fi
 
-echo "--- Iniciando/Continuando benchmark a partir de Tamanho: $ultimo_tamanho, Repetição: $ultima_repeticao ---"
+echo "--- Iniciando/Continuando a partir de Tamanho: $ultimo_tamanho, Repetição: $ultima_repeticao ---"
 
 
 # --- Parte 5: Execução e Coleta de Resultados ---
@@ -97,7 +94,7 @@ for tamanho in "${tamanhos[@]}"; do
         # --- LÓGICA DE CONTINUAÇÃO (REPETIÇÃO) ---
         # Se o tamanho for O MESMO que o último salvo, verifica a repetição
         if [ "$tamanho" -eq "$ultimo_tamanho" ]; then
-            # Se a repetição atual for menor ou igual à última salva, pula
+            # Se a repetição atual for menor ou igual à última salva, pula para a próxima
             if [ "$i" -le "$ultima_repeticao" ]; then
                 echo "Pulando Tamanho: $tamanho, Repetição: $i (já completa)."
                 continue
@@ -107,7 +104,6 @@ for tamanho in "${tamanhos[@]}"; do
         # --- Execução normal ---
         echo "Processando $ALGORITMO ($LINGUAGEM) - Tamanho: $tamanho, Repetição: $i de $num_repeticoes"
 
-        # --- CORREÇÃO 1: Usar barras normais (/) ---
         CAMINHO_COMPLETO_ARQUIVO_VETOR="$DIRETORIO_VETORES/tamanho_${tamanho}/vetor_${tamanho}_${i}.txt"
 
         if [ ! -f "$CAMINHO_COMPLETO_ARQUIVO_VETOR" ]; then

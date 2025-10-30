@@ -1,13 +1,11 @@
-#!/bin/bash
-
 # --- Parte 1: Encontrar o Diretório Base (TCC) ---
 DIRETORIO_ATUAL=$(dirname "$(readlink -f "$0")")
-# echo "Diretório inicial do script: $DIRETORIO_ATUAL" # Removido para limpeza
+echo "Diretório inicial do script: $DIRETORIO_ATUAL"
 
-DIRETORIO_BASE="" # Inicializa a variável
+DIRETORIO_BASE="" 
 
 while [ "$DIRETORIO_ATUAL" != "/" ]; do 
-    # echo "Verificando o diretório: $DIRETORIO_ATUAL" # Removido para limpeza
+    echo "Verificando o diretório: $DIRETORIO_ATUAL"
 
     if [ "$(basename "$DIRETORIO_ATUAL")" = "TCC" ]; then
         DIRETORIO_BASE="$DIRETORIO_ATUAL"
@@ -17,7 +15,6 @@ while [ "$DIRETORIO_ATUAL" != "/" ]; do
     DIRETORIO_ATUAL=$(dirname "$DIRETORIO_ATUAL")
 done
 
-# Verificar se o diretório TCC foi encontrado
 if [ -z "$DIRETORIO_BASE" ]; then
     echo "ERRO: Não foi possível encontrar o diretório 'TCC' subindo a árvore de diretórios."
     exit 1
@@ -34,88 +31,75 @@ DIRETORIO_VETORES="$DIRETORIO_BASE/Vetores"
 DIRETORIO_RESULTADOS_PYTHON="$DIRETORIO_BASE/Resultados/$LINGUAGEM"
 ARQUIVO_RESULTADOS="$DIRETORIO_RESULTADOS_PYTHON/resultados_"$ALGORITMO"_"$LINGUAGEM".csv" 
 
-
 CAMINHO_COMPLETO_ARQUIVO_FONTE="$DIRETORIO_ALGORITMOS/$NOME_ARQUIVO_FONTE"
 
-# --- Parte 3: Definição do Experimento ---
-tamanhos=(100 1000 10000 100000 1000000)
-num_repeticoes=100
-CABECALHO="Linguagem;Algoritmo;Tamanho;Tempo;Repeticao"
+# --- Parte 3: Verificação (Python não requer compilação) ---
+echo "Verificando script Python em: $CAMINHO_COMPLETO_ARQUIVO_FONTE..."
+if [ ! -f "$CAMINHO_COMPLETO_ARQUIVO_FONTE" ]; then
+    echo "ERRO: Arquivo fonte $NOME_ARQUIVO_FONTE não encontrado em $DIRETORIO_ALGORITMOS. Abortando."
+    exit 1
+fi
+echo "Script Python encontrado. Continuando..."
 
-# --- CORREÇÃO: Criar o diretório de resultados ANTES de escrever nele ---
+
+# --- Parte 4: Lógica para "Continuar de onde parou" ---
+
 mkdir -p "$DIRETORIO_RESULTADOS_PYTHON"
 
-# --- NOVO: Parte 4 - Lógica para Resumir ---
-
-# Valores padrão (iniciar do zero)
-iniciar_tamanho_idx=0
-iniciar_repeticao=1
+CABECALHO="Linguagem;Algoritmo;Tamanho;Tempo;Repeticao"
+ultimo_tamanho=0
+ultima_repeticao=0
 
 if [ ! -f "$ARQUIVO_RESULTADOS" ]; then
-    # 4.1: Arquivo não existe. Crie-o com o cabeçalho.
-    echo "Arquivo de resultados não encontrado. Criando novo em: $ARQUIVO_RESULTADOS"
+    # 1. Se o arquivo não existe, cria com o cabeçalho
+    echo "Criando novo arquivo de resultados: $ARQUIVO_RESULTADOS"
     echo "$CABECALHO" > "$ARQUIVO_RESULTADOS"
 else
-    # 4.2: Arquivo existe. Leia a última linha.
+    # 2. Se o arquivo existe, lê a última linha
     ultima_linha=$(tail -n 1 "$ARQUIVO_RESULTADOS")
     
-    if [ -z "$ultima_linha" ] || [ "$ultima_linha" == "$CABECALHO" ]; then
-        # 4.3: Arquivo está vazio ou só tem o cabeçalho. Comece do zero.
-        echo "Arquivo de resultados encontrado, mas vazio ou só com cabeçalho. Iniciando do zero."
-    else
-        # 4.4: Arquivo tem dados. Analise a última linha.
-        echo "Arquivo de resultados encontrado. Verificando onde parou..."
+    # 3. Verifica se a última linha não é o cabeçalho (ou seja, se já temos dados)
+    if [ "$ultima_linha" != "$CABECALHO" ] && [ -n "$ultima_linha" ]; then
+        # Extrai o último tamanho e repetição
+        ultimo_tamanho=$(echo "$ultima_linha" | awk -F';' '{print $3}')
+        ultima_repeticao=$(echo "$ultima_linha" | awk -F';' '{print $5}')
         
-        # Extrai o último tamanho (campo 3) e repetição (campo 5)
-        ultimo_tamanho=$(echo "$ultima_linha" | cut -d';' -f3)
-        ultima_repeticao=$(echo "$ultima_linha" | cut -d';' -f5)
-
-        echo "Última execução salva: Tamanho $ultimo_tamanho, Repetição $ultima_repeticao"
-
-        # Encontre o índice do último tamanho executado
-        achou_idx=false
-        for i in "${!tamanhos[@]}"; do
-           if [ "${tamanhos[$i]}" = "$ultimo_tamanho" ]; then
-                
-                if [ "$ultima_repeticao" -lt "$num_repeticoes" ]; then
-                    # 4.5: Continue do próximo item NO MESMO tamanho
-                    iniciar_tamanho_idx=$i
-                    iniciar_repeticao=$((ultima_repeticao + 1))
-                    echo "Continuando do Tamanho ${tamanhos[$iniciar_tamanho_idx]} (Repetição $iniciar_repeticao)..."
-                else
-                    # 4.6: Continue do próximo TAMANHO (repetição 1)
-                    iniciar_tamanho_idx=$((i + 1))
-                    iniciar_repeticao=1
-                    if [ $iniciar_tamanho_idx -lt ${#tamanhos[@]} ]; then
-                         echo "Continuando do próximo Tamanho ${tamanhos[$iniciar_tamanho_idx]} (Repetição 1)..."
-                    fi
-                fi
-                achou_idx=true
-                break
-           fi
-        done
-        
-        if [ "$achou_idx" = false ]; then
-             echo "AVISO: O último tamanho ($ultimo_tamanho) não está na lista. Reiniciando do zero."
-             echo "$CABECALHO" > "$ARQUIVO_RESULTADOS" # Reinicia o arquivo
+        # Validação (caso a linha esteja corrompida)
+        if ! [[ "$ultimo_tamanho" =~ ^[0-9]+$ ]] || ! [[ "$ultima_repeticao" =~ ^[0-9]+$ ]]; then
+            echo "Aviso: Última linha do CSV parece corrompida. Recomeçando do zero."
+            ultimo_tamanho=0
+            ultima_repeticao=0
         fi
     fi
 fi
 
-# --- MODIFICADO: Parte 5 - Execução e Coleta de Resultados ---
+echo "--- Iniciando/Continuando a partir de Tamanho: $ultimo_tamanho, Repetição: $ultima_repeticao ---"
 
-# 5.1: Verifique se já terminamos
-if [ $iniciar_tamanho_idx -ge ${#tamanhos[@]} ]; then
-    echo "Execução já estava completa. Nenhum teste a ser rodado."
-    exit 0
-fi
 
-# 5.2: Loop de tamanho modificado (começa do índice que encontramos)
-for ((t_idx = iniciar_tamanho_idx; t_idx < ${#tamanhos[@]}; t_idx++)); do
-    tamanho=${tamanhos[$t_idx]}
+# --- Parte 5: Execução e Coleta de Resultados ---
+tamanhos=(100 1000 10000 100000 1000000)
+num_repeticoes=100
 
-    # 5.3: Loop de repetição modificado (começa da repetição que encontramos)
-    for ((i = iniciar_repeticao; i <= num_repeticoes; i++)); do
+for tamanho in "${tamanhos[@]}"; do
+    # --- LÓGICA DE CONTINUAÇÃO (TAMANHO) ---
+    # Se o tamanho atual for menor que o último salvo, pula o loop inteiro
+    if [ "$tamanho" -lt "$ultimo_tamanho" ]; then
+        echo "Pulando tamanho $tamanho (já completo)."
+        continue
+    fi
+
+    for ((i = 1; i <= num_repeticoes; i++)); do
+        # --- LÓGICA DE CONTINUAÇÃO (REPETIÇÃO) ---
+        # Se o tamanho for O MESMO que o último salvo, verifica a repetição
+        if [ "$tamanho" -eq "$ultimo_tamanho" ]; then
+            # Se a repetição atual for menor ou igual à última salva, pula para a próxima
+            if [ "$i" -le "$ultima_repeticao" ]; then
+                echo "Pulando Tamanho: $tamanho, Repetição: $i (já completa)."
+                continue
+            fi
+        fi
+
+        # --- Execução normal ---
         echo "Processando $ALGORITMO ($LINGUAGEM) - Tamanho: $tamanho, Repetição: $i de $num_repeticoes"
 
         CAMINHO_COMPLETO_ARQUIVO_VETOR="$DIRETORIO_VETORES/tamanho_${tamanho}/vetor_${tamanho}_${i}.txt"
@@ -126,22 +110,17 @@ for ((t_idx = iniciar_tamanho_idx; t_idx < ${#tamanhos[@]}; t_idx++)); do
         else
             tempo_capturado=$(python "$CAMINHO_COMPLETO_ARQUIVO_FONTE" "$CAMINHO_COMPLETO_ARQUIVO_VETOR" "$ALGORITMO" "$tamanho")
             exit_code=$?
-            
             tempo_log=$(echo "$tempo_capturado" | xargs)
 
             if [ $exit_code -ne 0 ]; then
-                echo "ERRO na execução do Python (Tamanho: $tamanho, Repetição: $i). Código de saída: $exit_code"
+                echo "ERRO na execução do Python (Tamanho: $tamanho, Repetição: $i). Código: $exit_code"
                 tempo_log="ERRO_EXECUCAO"
             fi
         fi
-            
-        # Salva a linha no CSV (usando '>>' para adicionar)
+
+        # Salva a linha no CSV
         echo "$LINGUAGEM;$ALGORITMO;$tamanho;$tempo_log;$i" >> "$ARQUIVO_RESULTADOS"
     done
-    
-    # 5.4: --- IMPORTANTE ---
-    # Após o primeiro loop de tamanho terminar, todos os próximos devem começar da repetição 1
-    iniciar_repeticao=1 
 done
 
 echo "Execução concluída. Resultados salvos em $ARQUIVO_RESULTADOS"
