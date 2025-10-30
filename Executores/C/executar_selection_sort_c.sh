@@ -1,51 +1,133 @@
+#!/bin/bash
+
+# --- Parte 1: Encontrar o Diretório Base (TCC) ---
 DIRETORIO_ATUAL=$(dirname "$(readlink -f "$0")")
 echo "Diretório inicial do script: $DIRETORIO_ATUAL"
 
-while [ "$DIRETORIO_ATUAL" != "/" ]; do
-    
+DIRETORIO_BASE="" # Inicializa a variável
+
+while [ "$DIRETORIO_ATUAL" != "/" ]; do 
     echo "Verificando o diretório: $DIRETORIO_ATUAL"
 
     if [ "$(basename "$DIRETORIO_ATUAL")" = "TCC" ]; then
         DIRETORIO_BASE="$DIRETORIO_ATUAL"
+        echo "Diretório base (TCC) encontrado em: $DIRETORIO_BASE"
         break
     fi
     DIRETORIO_ATUAL=$(dirname "$DIRETORIO_ATUAL")
 done
 
-DIRETORIO_ALGORITMOS="$DIRETORIO_BASE/Algoritmos/C" 
-DIRETORIO_VETORES="$DIRETORIO_BASE/Vetores"
-ARQUIVO_RESULTADOS="$DIRETORIO_BASE/Resultados/C/resultados_selection_sort_c.csv" 
-
-NOME_ARQUIVO_FONTE="selection_sort.c"
-ARQUIVO_EXECUTAVEL="./selectionsort_exec"
-LINGUAGEM="C"
-ALGORITMO="SelectionSort"   
-
-CAMINHO_COMPLETO_ARQUIVO_FONTE="$DIRETORIO_ALGORITMOS\\$NOME_ARQUIVO_FONTE"
-
-gcc "$CAMINHO_COMPLETO_ARQUIVO_FONTE" -o "$ARQUIVO_EXECUTAVEL" -std=c++11 -Wall -Wextra
-if [ $? -ne 0 ]; then
-  exit 1
+if [ -z "$DIRETORIO_BASE" ]; then
+    echo "ERRO: Não foi possível encontrar o diretório 'TCC' subindo a árvore de diretórios."
+    exit 1
 fi
 
+# --- Parte 2: Definição de Variáveis (C++ - BubbleSort) ---
+
+NOME_ARQUIVO_FONTE="selection_sort.c"
+LINGUAGEM="C"
+ALGORITMO="SelectionSort"
+
+DIRETORIO_ALGORITMOS="$DIRETORIO_BASE/Algoritmos/"$LINGUAGEM""
+ARQUIVO_EXECUTAVEL="$DIRETORIO_ALGORITMOS/bubble_sort_exec"
+DIRETORIO_VETORES="$DIRETORIO_BASE/Vetores"
+DIRETORIO_RESULTADOS_CPP="$DIRETORIO_BASE/Resultados/$LINGUAGEM"
+ARQUIVO_RESULTADOS="$DIRETORIO_RESULTADOS_CPP/resultados_"$ALGORITMO"_"$LINGUAGEM".csv"
+
+CAMINHO_COMPLETO_ARQUIVO_FONTE="$DIRETORIO_ALGORITMOS/$NOME_ARQUIVO_FONTE"
+
+# --- Parte 3: Compilação ---
+echo "Compilando $CAMINHO_COMPLETO_ARQUIVO_FONTE..."
+gcc "$CAMINHO_COMPLETO_ARQUIVO_FONTE" -o "$ARQUIVO_EXECUTAVEL" -std=c++11 -Wall -Wextra
+if [ $? -ne 0 ]; then
+  echo "ERRO na compilação. Abortando."
+  exit 1
+fi
+echo "Compilação bem-sucedida. Executável em: $ARQUIVO_EXECUTAVEL"
+
+
+# --- Parte 4: Lógica para "Continuar de onde parou" ---
+
+# --- CORREÇÃO 2: Garantir que o diretório de resultados exista ---
+mkdir -p "$DIRETORIO_RESULTADOS_CPP"
+
+CABECALHO="Linguagem;Algoritmo;Tamanho;Tempo;Repeticao"
+ultimo_tamanho=0
+ultima_repeticao=0
+
+if [ ! -f "$ARQUIVO_RESULTADOS" ]; then
+    # 1. Se o arquivo não existe, cria com o cabeçalho
+    echo "Criando novo arquivo de resultados: $ARQUIVO_RESULTADOS"
+    echo "$CABECALHO" > "$ARQUIVO_RESULTADOS"
+else
+    # 2. Se o arquivo existe, lê a última linha
+    ultima_linha=$(tail -n 1 "$ARQUIVO_RESULTADOS")
+    
+    # 3. Verifica se a última linha não é o cabeçalho (ou seja, se já temos dados)
+    if [ "$ultima_linha" != "$CABECALHO" ] && [ -n "$ultima_linha" ]; then
+        # Extrai o último tamanho (campo 3) e repetição (campo 5)
+        ultimo_tamanho=$(echo "$ultima_linha" | awk -F';' '{print $3}')
+        ultima_repeticao=$(echo "$ultima_linha" | awk -F';' '{print $5}')
+        
+        # Validação (caso a linha esteja corrompida)
+        if ! [[ "$ultimo_tamanho" =~ ^[0-9]+$ ]] || ! [[ "$ultima_repeticao" =~ ^[0-9]+$ ]]; then
+            echo "Aviso: Última linha do CSV parece corrompida. Recomeçando do zero."
+            ultimo_tamanho=0
+            ultima_repeticao=0
+        fi
+    fi
+fi
+
+echo "--- Iniciando/Continuando benchmark a partir de Tamanho: $ultimo_tamanho, Repetição: $ultima_repeticao ---"
+
+
+# --- Parte 5: Execução e Coleta de Resultados ---
 tamanhos=(100 1000 10000 100000 1000000)
 num_repeticoes=100
 
-echo "Linguagem;Algoritmo;Tamanho;Tempo;Repeticao" > "$ARQUIVO_RESULTADOS"
-
 for tamanho in "${tamanhos[@]}"; do
-  for ((i = 1; i <= num_repeticoes; i++)); do
-    echo "Processando Tamanho: $tamanho: Repetição: $i de $num_repeticoes"
+    # --- LÓGICA DE CONTINUAÇÃO (TAMANHO) ---
+    # Se o tamanho atual for menor que o último salvo, pula o loop inteiro
+    if [ "$tamanho" -lt "$ultimo_tamanho" ]; then
+        echo "Pulando tamanho $tamanho (já completo)."
+        continue
+    fi
 
-    CAMINHO_COMPLETO_ARQUIVO_VETOR="$DIRETORIO_VETORES\\tamanho_${tamanho}\\vetor_${tamanho}_${i}.txt"
+    for ((i = 1; i <= num_repeticoes; i++)); do
+        # --- LÓGICA DE CONTINUAÇÃO (REPETIÇÃO) ---
+        # Se o tamanho for O MESMO que o último salvo, verifica a repetição
+        if [ "$tamanho" -eq "$ultimo_tamanho" ]; then
+            # Se a repetição atual for menor ou igual à última salva, pula
+            if [ "$i" -le "$ultima_repeticao" ]; then
+                echo "Pulando Tamanho: $tamanho, Repetição: $i (já completa)."
+                continue
+            fi
+        fi
 
-    tempo_capturado=$("$ARQUIVO_EXECUTAVEL" "$CAMINHO_COMPLETO_ARQUIVO_VETOR")
-    exit_code=$?
+        # --- Execução normal ---
+        echo "Processando $ALGORITMO ($LINGUAGEM) - Tamanho: $tamanho, Repetição: $i de $num_repeticoes"
 
-    tempo_log=$(echo "$tempo_capturado" | xargs)
+        # --- CORREÇÃO 1: Usar barras normais (/) ---
+        CAMINHO_COMPLETO_ARQUIVO_VETOR="$DIRETORIO_VETORES/tamanho_${tamanho}/vetor_${tamanho}_${i}.txt"
 
-    echo "$LINGUAGEM;$ALGORITMO;$tamanho;$tempo_log;$i" >> "$ARQUIVO_RESULTADOS"
-  done
+        if [ ! -f "$CAMINHO_COMPLETO_ARQUIVO_VETOR" ]; then
+            echo "AVISO: Vetor não encontrado em $CAMINHO_COMPLETO_ARQUIVO_VETOR. Pulando."
+            tempo_log="VETOR_NAO_ENCONTRADO"
+        else
+            tempo_capturado=$("$ARQUIVO_EXECUTAVEL" "$CAMINHO_COMPLETO_ARQUIVO_VETOR")
+            exit_code=$?
+            tempo_log=$(echo "$tempo_capturado" | xargs)
+
+            if [ $exit_code -ne 0 ]; then
+                echo "ERRO na execução do C++ (Tamanho: $tamanho, Repetição: $i). Código: $exit_code"
+                tempo_log="ERRO_EXECUCAO"
+            fi
+        fi
+
+        # Salva a linha no CSV
+        echo "$LINGUAGEM;$ALGORITMO;$tamanho;$tempo_log;$i" >> "$ARQUIVO_RESULTADOS"
+    done
 done
 
+echo "Execução concluída. Resultados salvos em $ARQUIVO_RESULTADOS"
 exit 0

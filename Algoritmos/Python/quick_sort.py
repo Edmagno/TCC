@@ -47,7 +47,7 @@ def main():
     vetor = ler_vetor(nome_arquivo)
 
     inicio = time.monotonic()  
-    quicksort(vetor)    
+    quicksort(vetor, 0, len(vetor) - 1)
     fim = time.monotonic()
     tempo_execucao = fim - inicio  
 
