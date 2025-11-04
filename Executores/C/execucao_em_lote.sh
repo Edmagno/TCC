@@ -27,16 +27,16 @@ echo "--- HeapSort Concluído ---"
 echo ""
 
 # 4. Selection Sort
-echo "--- (4/6) Executando C SelectionSort ---"
-bash ./executar_selection_sort_c.sh
-echo "--- SelectionSort Concluído ---"
-echo ""
+#echo "--- (4/6) Executando C SelectionSort ---"
+#bash ./executar_selection_sort_c.sh
+#echo "--- SelectionSort Concluído ---"
+#echo ""
 
- 5. Insertion Sort
-echo "--- (5/6) Executando C InsertionSort ---"
-bash ./executar_insertion_sort_c.sh
-echo "--- InsertionSort Concluído ---"
-echo ""
+# 5. Insertion Sort
+#echo "--- (5/6) Executando C InsertionSort ---"
+#bash ./executar_insertion_sort_c.sh
+#echo "--- InsertionSort Concluído ---"
+#echo ""
 
 # 6. Bubble Sort
 echo "--- (6/6) Executando C BubbleSort ---"

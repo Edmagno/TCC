@@ -33,10 +33,10 @@ echo ""
 #echo ""
 
 # 5. Insertion Sort
-echo "--- (5/6) Executando Python InsertionSort ---"
-bash ./executar_insertion_sort_py.sh
-echo "--- InsertionSort Concluído ---"
-echo ""
+#echo "--- (5/6) Executando Python InsertionSort ---"
+#bash ./executar_insertion_sort_py.sh
+#echo "--- InsertionSort Concluído ---"
+#echo ""
 
 # 6. Bubble Sort
 echo "--- (6/6) Executando Python BubbleSort ---"

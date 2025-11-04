@@ -2,7 +2,7 @@ import random
 import os
 
 #Caminho para salvar os vetores
-caminho_base = r"D:\TCC\Atual\Vetores"
+caminho_base = r"D:\TCC\Vetores"
 
 tamanhos = [1000000]  #Tamanhos dos vetores
 num_vetores_por_tamanho = 100  #Número de vetores por tamanho
@@ -12,7 +12,6 @@ random.seed(seed)
 
 # Cria a pasta principal, se não existir
 os.makedirs(caminho_base, exist_ok=True)
-
 
 for tamanho in tamanhos:
     # Cria a subpasta para o tamanho específico
