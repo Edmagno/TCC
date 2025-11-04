@@ -79,4 +79,4 @@ Toda a análise dos dados de performance foi centralizada no Jupyter Notebook lo
 
 ## Autor
 
-* **[Seu Nome Completo]** - [edamgnogomes@gmail.com]
+* **[Edmagno Gomes dos Santos]** - [edamgnogomes@gmail.com]
