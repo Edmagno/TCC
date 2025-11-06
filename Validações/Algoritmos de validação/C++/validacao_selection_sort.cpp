@@ -2,24 +2,21 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <algorithm> // Para std::swap
+#include <algorithm> 
 
-// --- Função do Selection Sort (a que você forneceu) ---
 void selectionSort(std::vector<int>& vetor) {
     int n = vetor.size();
     int i, j, pos;
     
     for (i = 0; i < n - 1; ++i) {
-        pos = i; // Assume que o elemento atual é o menor
+        pos = i; 
         
-        // Encontra o menor elemento no restante do vetor
         for (j = i + 1; j < n; ++j) {
             if (vetor[j] < vetor[pos]) {
                 pos = j;
             }
         }
 
-        // Se o menor elemento não for o elemento atual, troca-os
         if (pos != i) {
             std::swap(vetor[i], vetor[pos]);
         }
@@ -27,7 +24,6 @@ void selectionSort(std::vector<int>& vetor) {
 }
 
 
-// --- Funções de Leitura e Escrita de Arquivos ---
 std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     std::ifstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
@@ -53,7 +49,6 @@ void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<
     }
 }
 
-// --- Função main adaptada para o processo em lote ---
 int main() {
     std::string caminhoEntradaBase = "../../../Vetores/tamanho_100/";
     std::string caminhoSaidaBase = "../../Vetores ordenados/C++/Selection sort/";

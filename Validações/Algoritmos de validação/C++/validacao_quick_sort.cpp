@@ -2,9 +2,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <algorithm> // Para std::swap
+#include <algorithm> 
 
-// --- Funções do Quicksort (as que você forneceu) ---
 int particao(std::vector<int>& X, int p, int r) {
     int pivo, i, j;
     pivo = X[(p + r) / 2];
@@ -36,7 +35,6 @@ void quicksort(std::vector<int>& X, int p, int r) {
     }
 }
 
-// --- Funções de Leitura e Escrita de Arquivos ---
 std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     std::ifstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
@@ -62,7 +60,6 @@ void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<
     }
 }
 
-// --- Função main adaptada para o processo em lote ---
 int main() {
     std::string caminhoEntradaBase = "../../../Vetores/tamanho_100/";
     std::string caminhoSaidaBase = "../../Vetores ordenados/C++/Quick sort/";

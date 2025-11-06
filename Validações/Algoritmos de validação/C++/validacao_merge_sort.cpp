@@ -4,7 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-// --- Funções do Merge Sort (as que você forneceu) ---
 void intercala(std::vector<int>& X, int inicio, int meio, int fim) {
     int i;
     int inicio_vetor1 = inicio;
@@ -47,7 +46,6 @@ void merge_sort(std::vector<int>& X, int inicio, int fim) {
     }
 }
 
-// --- Funções de Leitura e Escrita de Arquivos ---
 std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     std::ifstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
@@ -73,7 +71,6 @@ void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<
     }
 }
 
-// --- Função main adaptada para o processo em lote ---
 int main() {
     std::string caminhoEntradaBase = "../../../Vetores/tamanho_100/";
     std::string caminhoSaidaBase = "../../Vetores ordenados/C++/Merge sort/";

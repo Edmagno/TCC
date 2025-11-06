@@ -11,7 +11,7 @@ def bubble_sort(X):
 def ler_vetor(nome_arquivo):
     
     with open(nome_arquivo, "r") as arquivo:
-            vetor = [int(linha.strip()) for linha in arquivo]  # List comprehension
+            vetor = [int(linha.strip()) for linha in arquivo]  
             return vetor
 
 def main():

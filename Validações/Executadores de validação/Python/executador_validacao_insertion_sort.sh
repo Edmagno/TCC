@@ -1,7 +1,3 @@
-#!/bin/bash
-
-# --- Script para executar o ALGORITMO BUBBLE SORT em Python ---
-
 # 1. Captura o diretório onde o SCRIPT está localizado.
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 

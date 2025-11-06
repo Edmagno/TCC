@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // Adicionado para sprintf
+#include <string.h> 
 
-// Função intercala (a que você forneceu)
 void intercala(int X[], int inicio, int meio, int fim) {
     int i;
     int inicio_vetor1, inicio_vetor2, poslivre;
@@ -86,7 +85,6 @@ int* lerVetor(const char* nomeArquivo, int* tamanho) {
     return vetor;
 }
 
-// Função para escrever o vetor ordenado em um arquivo
 void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
     FILE* arquivo = fopen(nomeArquivo, "w");
     if (arquivo == NULL) {
@@ -101,11 +99,8 @@ void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
     fclose(arquivo);
 }
 
-// Função main adaptada para o processo em lote
 int main() {
-    // Caminhos relativos a partir da pasta de execução do algoritmo
     char* caminhoEntradaBase = "../../../Vetores/tamanho_100/";
-    // Novo caminho de saída para o Merge Sort
     char* caminhoSaidaBase = "../../Vetores ordenados/C/Merge sort/";
 
     char nomeArquivoEntrada[256];
@@ -121,7 +116,6 @@ int main() {
         int* vetor = lerVetor(nomeArquivoEntrada, &tamanhoVetor);
 
         if (vetor != NULL && tamanhoVetor > 0) {
-            // Chamada correta para o merge_sort, passando os índices
             merge_sort(vetor, 0, tamanhoVetor - 1); 
             escreverVetor(nomeArquivoSaida, vetor, tamanhoVetor);
             printf("Arquivo vetor_100_%d.txt processado com sucesso.\n", i);

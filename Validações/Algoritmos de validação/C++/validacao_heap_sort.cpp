@@ -5,7 +5,6 @@
 #include <filesystem> 
 #include <algorithm>  
 
-// --- Funções do Heap Sort ---
 void ajustarHeap(std::vector<int>& X, int tamanho, int i) {
     int maior = i;
     int esq = 2 * i + 1;
@@ -28,21 +27,16 @@ void ajustarHeap(std::vector<int>& X, int tamanho, int i) {
 void heapsort(std::vector<int>& X) {
     int n = X.size();
 
-    // Constrói um heap máximo.
     for (int i = n / 2 - 1; i >= 0; i--) {
         ajustarHeap(X, n, i);
     }
 
-    // Extrai os elementos um por um do heap
     for (int i = n - 1; i > 0; i--) {
-        // Move a raiz atual (maior elemento) para o fim
         std::swap(X[0], X[i]);
-        // Chama ajustarHeap na heap reduzida
         ajustarHeap(X, i, 0);
     }
 }
 
-// --- Funções de Leitura e Escrita de Arquivos ---
 std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     std::ifstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
@@ -68,7 +62,6 @@ void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<
     }
 }
 
-// --- Função main adaptada para o processo em lote ---
 int main() {
     std::string caminhoEntradaBase = "../../../Vetores/tamanho_100/";
     std::string caminhoSaidaBase = "../../Vetores ordenados/C++/Selection sort/";

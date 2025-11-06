@@ -2,9 +2,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <algorithm> // Para std::swap
+#include <algorithm> 
 
-// Função bubbleSort (a que você forneceu)
 void bubbleSort(std::vector<int>& vetor) {
     int n = vetor.size();
     for (int i = 0; i < n - 1; i++) {
@@ -16,12 +15,11 @@ void bubbleSort(std::vector<int>& vetor) {
     }
 }
 
-// Função para ler um vetor de um arquivo (a que você forneceu)
 std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     std::ifstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
         std::cerr << "Erro ao abrir o arquivo de entrada: " << nomeDoArquivo << std::endl;
-        return {}; // Retorna um vetor vazio em caso de erro
+        return {}; 
     }
 
     std::vector<int> vetor;
@@ -32,7 +30,6 @@ std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     return vetor;
 }
 
-// Nova função para escrever o vetor ordenado em um arquivo
 void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<int>& vetor) {
     std::ofstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
@@ -45,17 +42,13 @@ void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<
     }
 }
 
-// Função main adaptada para o processo em lote
 int main() {
-    // Caminhos relativos a partir da pasta de execução do algoritmo (CPP)
     std::string caminhoEntradaBase = "../../../Vetores/tamanho_100/";
-    // Novo caminho de saída para os resultados do C++
     std::string caminhoSaidaBase = "../../Vetores ordenados/C++/Bubble sort/";
 
     std::cout << "Iniciando processo de ordenacao em lote com Bubble Sort (C++)..." << std::endl;
 
     for (int i = 1; i <= 100; ++i) {
-        // Constrói os nomes dos arquivos de forma mais moderna com C++
         std::string nomeArquivoEntrada = caminhoEntradaBase + "vetor_100_" + std::to_string(i) + ".txt";
         std::string nomeArquivoSaida = caminhoSaidaBase + "vetor_100_" + std::to_string(i) + ".txt";
 

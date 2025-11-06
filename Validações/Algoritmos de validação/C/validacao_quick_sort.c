@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // Adicionado para sprintf
+#include <string.h> 
 
-// --- Funções do Quicksort (as que você forneceu) ---
 void troca(int X[], int i, int j) {
     int aux;
     aux = X[i];
@@ -39,7 +38,6 @@ void quicksort(int X[], int p, int r) {
     }
 }
 
-// --- Funções de Leitura e Escrita de Arquivos ---
 int* lerVetor(const char* nomeArquivo, int* tamanho) {
     FILE* arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL) {
@@ -87,11 +85,8 @@ void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
     fclose(arquivo);
 }
 
-// --- Função main adaptada para o processo em lote ---
 int main() {
-    // Caminhos relativos a partir da pasta de execução
     char* caminhoEntradaBase = "../../../Vetores/tamanho_100/";
-    // Novo caminho de saída para o Quicksort
     char* caminhoSaidaBase = "../../Vetores ordenados/C/Quick sort/";
 
     char nomeArquivoEntrada[256];
@@ -107,7 +102,6 @@ int main() {
         int* vetor = lerVetor(nomeArquivoEntrada, &tamanhoVetor);
 
         if (vetor != NULL && tamanhoVetor > 0) {
-            // Chamada correta para o quicksort, passando os índices
             quicksort(vetor, 0, tamanhoVetor - 1);
             escreverVetor(nomeArquivoSaida, vetor, tamanhoVetor);
             printf("Arquivo vetor_100_%d.txt processado com sucesso.\n", i);

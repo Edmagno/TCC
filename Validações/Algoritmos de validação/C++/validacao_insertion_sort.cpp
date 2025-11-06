@@ -4,7 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-// Função insertionSort
 void insertionSort(std::vector<int>& vetor) {
     int n = vetor.size();
     for (int i = 1; i < n; ++i) {
@@ -19,7 +18,6 @@ void insertionSort(std::vector<int>& vetor) {
     }
 }
 
-// Função para ler um vetor de um arquivo
 std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     std::ifstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
@@ -35,7 +33,6 @@ std::vector<int> lerVetorDeArquivo(const std::string& nomeDoArquivo) {
     return vetor;
 }
 
-// Função para escrever o vetor ordenado em um arquivo
 void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<int>& vetor) {
     std::ofstream arquivo(nomeDoArquivo);
     if (!arquivo.is_open()) {
@@ -48,10 +45,8 @@ void escreverVetorEmArquivo(const std::string& nomeDoArquivo, const std::vector<
     }
 }
 
-// Função main adaptada para o processo em lote
 int main() {
     std::string caminhoEntradaBase = "../../../Vetores/tamanho_100/";
-    // Caminho ajustado conforme sua solicitação
     std::string caminhoSaidaBase = "../../Vetores ordenados/C++/Insertion sort/";
 
     std::cout << "Iniciando processo de ordenacao em lote com Insertion Sort (C++)..." << std::endl;

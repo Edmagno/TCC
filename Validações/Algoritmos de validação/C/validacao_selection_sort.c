@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // Adicionado para sprintf
+#include <string.h> 
 
-// Função selection_sort (a que você forneceu)
 void selection_sort(int X[], int n) {
     int i, j, eleito, menor, pos;
     for (i = 0; i < n - 1; i++) {
@@ -25,7 +24,6 @@ void selection_sort(int X[], int n) {
     }
 }
 
-// Função para ler um vetor de um arquivo
 int* lerVetor(const char* nomeArquivo, int* tamanho) {
     FILE* arquivo = fopen(nomeArquivo, "r");
     if (arquivo == NULL) {
@@ -59,7 +57,6 @@ int* lerVetor(const char* nomeArquivo, int* tamanho) {
     return vetor;
 }
 
-// Função para escrever o vetor ordenado em um arquivo
 void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
     FILE* arquivo = fopen(nomeArquivo, "w");
     if (arquivo == NULL) {
@@ -74,11 +71,8 @@ void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
     fclose(arquivo);
 }
 
-// Função main adaptada para o processo em lote
 int main() {
-    // Caminhos relativos a partir da pasta de execução do algoritmo
     char* caminhoEntradaBase = "../../../Vetores/tamanho_100/";
-    // Novo caminho de saída para o Selection Sort
     char* caminhoSaidaBase = "../../Vetores ordenados/C/Selection sort/";
 
     char nomeArquivoEntrada[256];
@@ -94,7 +88,7 @@ int main() {
         int* vetor = lerVetor(nomeArquivoEntrada, &tamanhoVetor);
 
         if (vetor != NULL && tamanhoVetor > 0) {
-            selection_sort(vetor, tamanhoVetor); // Chamando o selection_sort
+            selection_sort(vetor, tamanhoVetor); 
             escreverVetor(nomeArquivoSaida, vetor, tamanhoVetor);
             printf("Arquivo vetor_100_%d.txt processado com sucesso.\n", i);
             free(vetor);

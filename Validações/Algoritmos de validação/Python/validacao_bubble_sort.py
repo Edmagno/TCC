@@ -1,6 +1,5 @@
 import os
 
-# --- Funções do Bubble Sort e de Leitura (as que você forneceu) ---
 def bubble_sort(X):
     n = len(X)
     for i in range(n):
@@ -21,7 +20,6 @@ def ler_vetor(nome_arquivo):
         print(f"Ocorreu um erro ao ler o arquivo {nome_arquivo}: {e}")
         return None
 
-# --- Nova função para escrever o vetor em um arquivo ---
 def escrever_vetor(nome_arquivo, vetor):
     """Escreve um vetor (lista) em um arquivo de texto."""
     try:
@@ -32,23 +30,19 @@ def escrever_vetor(nome_arquivo, vetor):
         print(f"Ocorreu um erro ao escrever no arquivo {nome_arquivo}: {e}")
 
 
-# --- Função principal adaptada para o processo em lote ---
 def main():
     """
     Função principal que orquestra a leitura, ordenação e escrita
     de 100 vetores.
     """
-    # Caminhos relativos a partir da pasta de execução do algoritmo (Python)
     caminho_entrada_base = os.path.join("..", "..", "..", "Vetores", "tamanho_100")
     caminho_saida_base = os.path.join("..", "..", "Vetores ordenados", "Python", "Bubble sort")
 
-    # Cria o diretório de saída se ele não existir
     os.makedirs(caminho_saida_base, exist_ok=True)
 
     print("Iniciando processo de ordenacao em lote com Bubble Sort (Python)...")
 
     for i in range(1, 101):
-        # Constrói os nomes dos arquivos de forma segura
         nome_arquivo_entrada = os.path.join(caminho_entrada_base, f"vetor_100_{i}.txt")
         nome_arquivo_saida = os.path.join(caminho_saida_base, f"vetor_100_{i}.txt")
 

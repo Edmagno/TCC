@@ -11,7 +11,6 @@ def ler_vetor(caminho_arquivo):
             vetor = [int(linha.strip()) for linha in arquivo]
             return vetor
     except Exception:
-        # Silencioso para não poluir o console, o erro será logado no relatório
         return None
 
 def verificar_ordenacao(vetor):
@@ -20,10 +19,8 @@ def verificar_ordenacao(vetor):
     Retorna True se estiver ordenada, False caso contrário.
     """
     if not vetor or len(vetor) < 2:
-        return True # Um vetor vazio ou com um elemento é considerado ordenado
+        return True 
     for i in range(len(vetor) - 1):
-        # A verificação falha apenas se um elemento for estritamente maior que o seu sucessor.
-        # Isso permite que elementos adjacentes sejam iguais (ex: [5, 5, 6]), o que está correto.
         if vetor[i] > vetor[i+1]:
             return False
     return True
@@ -68,7 +65,6 @@ def main():
 
     print(f"Iniciando a verificação de ordenação em: {os.path.abspath(caminho_base)}...")
 
-    # Variáveis para o relatório
     linhas_relatorio = []
     total_geral_corretos = 0
     total_geral_incorretos = 0

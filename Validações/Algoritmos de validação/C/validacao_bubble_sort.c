@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // Adicionada para manipulação de strings
+#include <string.h> 
 
-// A função bubble_sort permanece a mesma
 void bubble_sort(int X[], int n) {
     int i, j, aux;
     for (i = 0; i < n; i++) {
@@ -16,10 +15,8 @@ void bubble_sort(int X[], int n) {
     }
 }
 
-// A função lerVetor permanece a mesma
 int* lerVetor(const char* nomeArquivo, int* tamanho) {
     FILE* arquivo = fopen(nomeArquivo, "r");
-    // Verifica se o arquivo foi aberto com sucesso
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo de entrada: %s\n", nomeArquivo);
         *tamanho = 0;
@@ -51,12 +48,7 @@ int* lerVetor(const char* nomeArquivo, int* tamanho) {
     return vetor;
 }
 
-/**
- * @brief Escreve um vetor de inteiros em um arquivo de texto.
- * * @param nomeArquivo O caminho completo do arquivo a ser criado/escrito.
- * @param vetor O vetor de inteiros a ser salvo.
- * @param tamanho O número de elementos no vetor.
- */
+
 void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
     FILE* arquivo = fopen(nomeArquivo, "w");
     if (arquivo == NULL) {
@@ -71,15 +63,11 @@ void escreverVetor(const char* nomeArquivo, int vetor[], int tamanho) {
     fclose(arquivo);
 }
 int main() {
-    // CAMINHOS RELATIVOS CORRIGIDOS a partir de ".../Algoritmos de validação/C"
 
-    // Sobe 3 níveis para chegar na pasta TCC, e então desce para Vetores...
     char* caminhoEntradaBase = "../../../Vetores/tamanho_100/";
     
-    // Sobe 2 níveis para chegar na pasta Validações, e então desce...
     char* caminhoSaidaBase = "../../Vetores ordenados/C/Bubble sort/";
 
-    // O restante do seu código main continua igual...
     char nomeArquivoEntrada[256];
     char nomeArquivoSaida[256];
     
