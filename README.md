@@ -1,4 +1,4 @@
-# TCC: Análise de Performance de Algoritmos de Ordenação (C vs. C++)
+# TCC: Análise de Performance de Algoritmos de Ordenação (C vs. C++ vs. Python)
 
 Este repositório contém todos os artefatos relacionados ao meu Trabalho de Conclusão de Curso (TCC) em Engenharia da Computação focado na análise de desempenho de algoritmos de ordenação (Bubblesort, Insertionsort, Selectionsort, QuickSort, MergeSort e HeapSort) implementados em C, C++ e Python.
 
@@ -45,7 +45,7 @@ Antes de qualquer execução, foi necessário criar uma base de dados consistent
 
 Os seis algoritmos (BubbleSort, InsertionSort, SelectionSort, MergeSort, HeapSort e QuickSort) foram implementados nas linguagens C, C++ e Python. Os códigos-fonte completos estão disponíveis na pasta `/Algoritmos`.
 
-### Fase 3: Validação da Corretude
+### Fase 3: Validação da implementação
 
 Antes de medir o *tempo* de execução, foi executada uma etapa de validação das implementações. Este processo foi feito em duas etapas e está contido na pasta `/Validações`:
 
